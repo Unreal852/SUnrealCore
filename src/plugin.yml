@@ -1,0 +1,10 @@
+name: SUnrealCore
+description: Spigot Unreal Core
+version: 1.0.0
+author: Unreal852
+main: fr.unreal852.unrealcore.Main
+api-version: 1.15.0
+
+commands:
+  uc:
+    description: UnrealCore Commands.
