@@ -12,8 +12,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin
 {
-    private static PluginMessenger s_messager;
-    private static Main            s_instance;
+    private static       PluginMessenger s_messager;
+    private static       Main            s_instance;
+    private static final boolean         s_debug = false;
 
     public static Main getInstance()
     {
@@ -55,5 +56,12 @@ public class Main extends JavaPlugin
         manager.registerEvents(new SpecialItemPlayerItemDropListener(), this);
         manager.registerEvents(new SpecialItemPlayerItemHeldListener(), this);
         manager.registerEvents(new SpecialItemInventoryClickListener(), this);
+    }
+
+    private void loadDebug()
+    {
+        if(!s_debug)
+            return;
+
     }
 }
