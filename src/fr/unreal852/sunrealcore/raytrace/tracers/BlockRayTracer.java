@@ -1,6 +1,7 @@
 package fr.unreal852.sunrealcore.raytrace.tracers;
 
 import fr.unreal852.sunrealcore.raytrace.BaseRayTracer;
+import fr.unreal852.sunrealcore.raytrace.RayTraceHitResult;
 import fr.unreal852.sunrealcore.raytrace.RayTraceResult;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,7 +17,29 @@ public class BlockRayTracer extends BaseRayTracer<Block>
     @Override
     public RayTraceResult<Block> trace(LivingEntity entityFrom, Location locationFrom, double maxRange, int maxHits)
     {
-        return null;
+        RayTraceResult<Block> traceResult = new RayTraceResult<>();
+        Block hitBlock;
+        Location locationProgress = locationFrom.clone();
+        Vector vectorProgress = locationProgress.getDirection().normalize().clone().multiply(getVectorProgress());
+        maxRange = (100 * maxRange) / (getVectorProgress() * 100);
+        int currentLoop = 0;
+        while (currentLoop < maxRange)
+        {
+            ++currentLoop;
+            locationProgress.add(vectorProgress);
+            onProgress(entityFrom, locationFrom, locationProgress);
+            hitBlock = locationProgress.getBlock();
+            if (!isWallHack() && hitBlock.getType() != Material.AIR && !canGoThrough(entityFrom, locationFrom, locationProgress, hitBlock))
+                continue;
+            if (onHitBlock(entityFrom, locationFrom, hitBlock))
+            {
+                traceResult.add(new RayTraceHitResult<>(hitBlock, locationFrom, (currentLoop * (getVectorProgress() * 100)) / 100));
+                if (traceResult.size() >= maxHits)
+                    break;
+            }
+        }
+        traceResult.lock();
+        return traceResult;
     }
 
     @Override
@@ -26,7 +49,7 @@ public class BlockRayTracer extends BaseRayTracer<Block>
     }
 
     @Override
-    protected boolean canGoThrough(Location locationFrom, Block block)
+    protected boolean canGoThrough(LivingEntity entityFrom, Location locationFrom, Location locationProgress, Block block)
     {
         return true;
     }
@@ -34,12 +57,12 @@ public class BlockRayTracer extends BaseRayTracer<Block>
     @Override
     protected boolean onHitType(LivingEntity entityFrom, Location locationFrom, Location locationProgress, Block hitType)
     {
-        return false;
+        return true;
     }
 
     @Override
     protected boolean onHitBlock(LivingEntity entityFrom, Location locationFrom, Block block)
     {
-        return false;
+        return true;
     }
 }

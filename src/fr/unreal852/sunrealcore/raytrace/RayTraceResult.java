@@ -6,7 +6,8 @@ import java.util.List;
 
 public class RayTraceResult<T>
 {
-    private List<RayTraceHitResult<T>> m_hits = new ArrayList<>();
+    private List<RayTraceHitResult<T>> m_hits   = new ArrayList<>();
+    private boolean                    m_locked = false;
 
     public RayTraceResult()
     {
@@ -16,11 +17,13 @@ public class RayTraceResult<T>
     public RayTraceResult(Collection<RayTraceHitResult<T>> rayTraceHitResultCollection)
     {
         m_hits.addAll(rayTraceHitResultCollection);
+
     }
 
-    protected void add(RayTraceHitResult<T> hitResult)
+    public void add(RayTraceHitResult<T> hitResult)
     {
-        m_hits.add(hitResult);
+        if (!m_locked)
+            m_hits.add(hitResult);
     }
 
     public int size()
@@ -31,6 +34,11 @@ public class RayTraceResult<T>
     public boolean hasHit()
     {
         return m_hits.size() > 0;
+    }
+
+    public boolean isLocked()
+    {
+        return m_locked;
     }
 
     public RayTraceHitResult<T> getFirstHit()
@@ -52,5 +60,10 @@ public class RayTraceResult<T>
         if (!hasHit())
             return new ArrayList<>();
         return m_hits;
+    }
+
+    public void lock()
+    {
+        m_locked = true;
     }
 }

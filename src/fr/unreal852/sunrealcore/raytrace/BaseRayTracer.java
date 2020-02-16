@@ -73,7 +73,7 @@ public abstract class BaseRayTracer<T>
             locationProgress.add(vectorProgress);
             onProgress(entityFrom, locationFrom, locationProgress);
             hitBlock = locationProgress.getBlock();
-            if (!m_wallHack && hitBlock.getType() != Material.AIR && !canGoThrough(locationFrom, hitBlock))
+            if (!m_wallHack && hitBlock.getType() != Material.AIR && !canGoThrough(entityFrom, locationFrom, locationProgress, hitBlock))
                 continue;
             onHitBlock(entityFrom, locationFrom, hitBlock);
             for (T hitType : possibleTargets)
@@ -87,6 +87,7 @@ public abstract class BaseRayTracer<T>
             if (traceResult.size() >= maxHits)
                 break;
         }
+        traceResult.lock();
         return traceResult;
     }
 
@@ -99,7 +100,7 @@ public abstract class BaseRayTracer<T>
 
     protected abstract List<T> getPossibleTargets(Location locationFrom, double maxRange);
 
-    protected abstract boolean canGoThrough(Location locationFrom, Block block);
+    protected abstract boolean canGoThrough(LivingEntity entityFrom, Location locationFrom, Location locationProgress,  Block block);
 
     protected abstract boolean onHitType(LivingEntity entityFrom, Location locationFrom, Location locationProgress, T hitType);
 
