@@ -29,7 +29,7 @@ public final class ConfigDataManager
         s_serializers.remove(tClass);
     }
 
-    public static IConfigDataValue get(Class<?> tClass)
+    public static <T> IConfigDataValue<T> get(Class<T> tClass)
     {
         if (!s_serializers.containsKey(tClass))
             return null;

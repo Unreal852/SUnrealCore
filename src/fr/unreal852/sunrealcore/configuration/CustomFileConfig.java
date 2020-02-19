@@ -205,18 +205,15 @@ public class CustomFileConfig
 
     public <T> T get(Class<T> tClass, String path)
     {
-        IConfigDataValue dataValue = ConfigDataManager.get(tClass);
+        IConfigDataValue<T> dataValue = ConfigDataManager.get(tClass);
         if (dataValue == null)
             return null;
-        Object value = dataValue.readValue(this, path);
-        if (value == null)
-            return null;
-        return (T) value;
+        return dataValue.readValue(this, path);
     }
 
     public <T> void set(Class<T> tClass, String path, T value)
     {
-        IConfigDataValue dataValue = ConfigDataManager.get(tClass);
+        IConfigDataValue<T> dataValue = ConfigDataManager.get(tClass);
         if (dataValue == null)
             return;
         dataValue.writeValue(this, path, value);

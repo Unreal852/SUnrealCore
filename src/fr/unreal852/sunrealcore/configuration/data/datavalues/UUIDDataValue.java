@@ -5,10 +5,10 @@ import fr.unreal852.sunrealcore.configuration.data.IConfigDataValue;
 
 import java.util.UUID;
 
-public class UUIDDataValue implements IConfigDataValue
+public class UUIDDataValue implements IConfigDataValue<UUID>
 {
     @Override
-    public Object readValue(CustomFileConfig config, String path)
+    public UUID readValue(CustomFileConfig config, String path)
     {
         String value = config.getString(path);
         if (value.isEmpty() || !value.contains("-"))
@@ -17,9 +17,8 @@ public class UUIDDataValue implements IConfigDataValue
     }
 
     @Override
-    public void writeValue(CustomFileConfig config, String path, Object value)
+    public void writeValue(CustomFileConfig config, String path, UUID value)
     {
-        if(value instanceof UUID)
-            config.getYamlConfiguration().set(path, value.toString());
+        config.getYamlConfiguration().set(path, value.toString());
     }
 }

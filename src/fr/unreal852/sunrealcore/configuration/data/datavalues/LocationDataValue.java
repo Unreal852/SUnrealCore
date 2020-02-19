@@ -8,10 +8,10 @@ import org.bukkit.World;
 
 import java.util.UUID;
 
-public class LocationDataValue implements IConfigDataValue
+public class LocationDataValue implements IConfigDataValue<Location>
 {
     @Override
-    public Object readValue(CustomFileConfig config, String path)
+    public Location readValue(CustomFileConfig config, String path)
     {
         String value = config.getString(path);
         if (value.isEmpty() || !value.contains("-"))
@@ -23,15 +23,12 @@ public class LocationDataValue implements IConfigDataValue
     }
 
     @Override
-    public void writeValue(CustomFileConfig config, String path, Object value)
+    public void writeValue(CustomFileConfig config, String path, Location location)
     {
-        if (value instanceof Location)
-        {
-            Location location = (Location) value;
-            String builder = location.getWorld().getName()
-                    + ":" + location.getX() + ":" + location.getY() + ":" + location.getZ() + ":"
-                    + location.getPitch() + ":" + location.getYaw();
-            config.getYamlConfiguration().set(path, builder);
-        }
+        String builder = location.getWorld().getName()
+                + ":" + location.getX() + ":" + location.getY() + ":" + location.getZ() + ":"
+                + location.getPitch() + ":" + location.getYaw();
+        config.getYamlConfiguration().set(path, builder);
+
     }
 }
