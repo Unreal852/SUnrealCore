@@ -37,6 +37,8 @@ public class BlockRayTracer extends BaseRayTracer<Block>
                 if (traceResult.size() >= maxHits)
                     break;
             }
+            if (traceResult.size() >= maxHits)
+                break;
         }
         traceResult.lock();
         return traceResult;

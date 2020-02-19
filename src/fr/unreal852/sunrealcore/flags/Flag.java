@@ -2,6 +2,7 @@ package fr.unreal852.sunrealcore.flags;
 
 import fr.unreal852.sunrealcore.Main;
 import fr.unreal852.sunrealcore.utils.ItemStackUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -62,7 +63,8 @@ public final class Flag
         data.getPersistentDataContainer().set(new NamespacedKey(Main.getInstance(), key), type, value);
     }
 
-    /*
+
+    /**
      * Set flag value
      *
      * @param data  Data Holder
@@ -73,12 +75,12 @@ public final class Flag
      * @param <D>   Data Holder Type
      * @param <T>   Java type of the tag value
      * @param <Z>   Type of the object to store
-     /
+     */
     public static <D extends PersistentDataHolder, T, Z> void setTemporaryFlag(D data, String key, Z value, long delay, PersistentDataType<T, Z> type)
     {
         data.getPersistentDataContainer().set(new NamespacedKey(Main.getInstance(), key), type, value);
-        TasksManager.startNewDelayed(new FlagTemporaryTask(data, key), delay);
-    } */
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> removeFlag(data, key), delay);
+    }
 
     /**
      * Remove flag
@@ -147,14 +149,12 @@ public final class Flag
      * @param type  Value Type
      * @param <T>   Java type of the tag value
      * @param <Z>   Type of the object to store
-     /
+     */
     public static <T, Z> void setTemporaryFlag(ItemStack stack, String key, Z value, long delay, PersistentDataType<T, Z> type)
     {
-        ItemMeta meta = ItemStackUtils.getMeta(stack);
-        setFlag(meta, key, value, type);
-        stack.setItemMeta(meta);
-        TasksManager.startNewDelayed(new FlagTemporaryTask(stack, key), delay);
-    } */
+        setFlag(stack, key, value, type);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), () -> removeFlag(stack, key), delay);
+    }
 
     /**
      * Remove flag

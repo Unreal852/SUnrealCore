@@ -1,6 +1,8 @@
 package fr.unreal852.sunrealcore.configuration;
 
 import com.google.common.collect.Sets;
+import fr.unreal852.sunrealcore.configuration.data.ConfigDataManager;
+import fr.unreal852.sunrealcore.configuration.data.IConfigDataValue;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,10 +13,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class CustomFileConfig
 {
@@ -122,7 +121,7 @@ public class CustomFileConfig
     public Set<String> getSection(String path)
     {
         if (!getYamlConfiguration().isConfigurationSection(path))
-            return null;
+            return Sets.newHashSet();
         ConfigurationSection section = getYamlConfiguration().getConfigurationSection(path);
         return section == null ? Sets.newHashSet() : section.getKeys(false);
     }
@@ -202,6 +201,38 @@ public class CustomFileConfig
     {
         double val = getDouble(path);
         return (float) val;
+    }
+
+    public <T> T get(Class<T> tClass, String path)
+    {
+        IConfigDataValue dataValue = ConfigDataManager.get(tClass);
+        if (dataValue == null)
+            return null;
+        Object value = dataValue.readValue(this, path);
+        if (value == null)
+            return null;
+        return (T) value;
+    }
+
+    public <T> void set(Class<T> tClass, String path, T value)
+    {
+        IConfigDataValue dataValue = ConfigDataManager.get(tClass);
+        if (dataValue == null)
+            return;
+        dataValue.writeValue(this, path, value);
+        save();
+    }
+
+    public void save()
+    {
+        try
+        {
+            getYamlConfiguration().save(getFile());
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
 
     /**

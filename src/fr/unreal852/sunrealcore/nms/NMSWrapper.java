@@ -1,6 +1,6 @@
 package fr.unreal852.sunrealcore.nms;
 
-public abstract class NMSWrapper<T>
+public abstract class NMSWrapper<NMS>
 {
-    public abstract T getNMS();
+    public abstract NMS getNMS();
 }

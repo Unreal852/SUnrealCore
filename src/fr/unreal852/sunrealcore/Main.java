@@ -1,5 +1,6 @@
 package fr.unreal852.sunrealcore;
 
+import fr.unreal852.sunrealcore.debug.DebugMain;
 import fr.unreal852.sunrealcore.messages.PluginMessenger;
 import fr.unreal852.sunrealcore.specialitems.listeners.SpecialItemInteractListener;
 import fr.unreal852.sunrealcore.specialitems.listeners.SpecialItemInventoryClickListener;
@@ -12,9 +13,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin
 {
-    private static       PluginMessenger s_messager;
+    private static       PluginMessenger s_messenger;
     private static       Main            s_instance;
-    private static final boolean         s_debug = false;
+    private static final boolean         s_debug = true;
 
     public static Main getInstance()
     {
@@ -23,7 +24,7 @@ public class Main extends JavaPlugin
 
     public static PluginMessenger getMessenger()
     {
-        return s_messager;
+        return s_messenger;
     }
 
     /**
@@ -32,10 +33,9 @@ public class Main extends JavaPlugin
     public void onEnable()
     {
         s_instance = this;
-        s_messager = new PluginMessenger(this, ChatColor.BLUE + "UnrealCore" + ChatColor.WHITE + " >> ");
-        /*
-        RegisterCommands();
-        RegisterEvents(); */
+        s_messenger = new PluginMessenger(this, ChatColor.BLUE + "UnrealCore" + ChatColor.WHITE + " >> ");
+        loadDebug();
+        registerEvents();
     }
 
     /**
@@ -60,8 +60,8 @@ public class Main extends JavaPlugin
 
     private void loadDebug()
     {
-        if(!s_debug)
+        if (!s_debug)
             return;
-
+        DebugMain.init();
     }
 }
