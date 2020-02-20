@@ -13,21 +13,21 @@ import java.util.*;
 
 public abstract class SpecialItem
 {
-    private static       Map<String, SpecialItem> s_registeredItems = new HashMap<>();
-    private static final Random                   m_random          = new Random();
-    private static final String                   s_idFlag          = "SpecialItemID";
+    private static       Map<String, SpecialItem> ITEMS   = new HashMap<>();
+    private static final Random                   RANDOM  = new Random();
+    private static final String                   FLAG_ID = "SpecialItemID";
 
     public static SpecialItem get(ItemStack stack)
     {
         if (stack == null || stack.getType() == Material.AIR)
             return null;
-        String id = Flag.getFlag(stack, s_idFlag, PersistentDataType.STRING);
+        String id = Flag.getFlag(stack, FLAG_ID, PersistentDataType.STRING);
         if (id == null || id.isEmpty())
             return null;
-        if (!s_registeredItems.containsKey(id))
+        if (!ITEMS.containsKey(id))
             Bukkit.getPluginManager().callEvent(new UnknownSpecialItemUseEvent(id, stack));
-        if (s_registeredItems.containsKey(id))
-            return s_registeredItems.get(id);
+        if (ITEMS.containsKey(id))
+            return ITEMS.get(id);
         return null;
     }
 
@@ -35,7 +35,7 @@ public abstract class SpecialItem
     {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < 5; i++)
-            builder.append(m_random.nextInt(10));
+            builder.append(RANDOM.nextInt(10));
         return builder.toString();
     }
 
@@ -49,16 +49,16 @@ public abstract class SpecialItem
     {
         m_id = generateID();
         m_stack = stack;
-        Flag.setFlag(stack, s_idFlag, m_id, PersistentDataType.STRING);
+        Flag.setFlag(stack, FLAG_ID, m_id, PersistentDataType.STRING);
         prepareStack(name, lore);
-        s_registeredItems.put(m_id, this);
+        ITEMS.put(m_id, this);
     }
 
     public SpecialItem(ItemStack stack)
     {
-        m_id = Flag.getFlag(stack, s_idFlag, PersistentDataType.STRING);
+        m_id = Flag.getFlag(stack, FLAG_ID, PersistentDataType.STRING);
         m_stack = stack;
-        s_registeredItems.put(m_id, this);
+        ITEMS.put(m_id, this);
     }
 
     private void prepareStack(String name, String... lore)
@@ -96,7 +96,7 @@ public abstract class SpecialItem
 
     public boolean isRegistered()
     {
-        return s_registeredItems.containsKey(m_id);
+        return ITEMS.containsKey(m_id);
     }
 
     public boolean cancelNotImplementedEvents()
@@ -106,8 +106,8 @@ public abstract class SpecialItem
 
     public void unregister()
     {
-        Flag.removeFlag(m_stack, s_idFlag);
-        s_registeredItems.remove(m_id);
+        Flag.removeFlag(m_stack, FLAG_ID);
+        ITEMS.remove(m_id);
         onUnregister();
     }
 

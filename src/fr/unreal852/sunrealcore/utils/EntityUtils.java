@@ -17,6 +17,8 @@ public final class EntityUtils
      */
     public static List<Entity> getNearbyEntities(Location loc, double range)
     {
+        if (loc.getWorld() == null)
+            return new ArrayList<>();
         List<Entity> entities = new ArrayList<>();
         for (Entity entity : loc.getWorld().getEntities())
         {

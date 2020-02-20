@@ -17,7 +17,7 @@ public class ConfigDataManager
         return s_instance.get(tClass);
     }
 
-    private final Map<Class<?>, IConfigDataValue> s_serializers = new HashMap<>();
+    private final Map<Class<?>, IConfigDataValue> m_serializers = new HashMap<>();
 
     public ConfigDataManager()
     {
@@ -33,22 +33,22 @@ public class ConfigDataManager
 
     public <T> void register(Class<T> tClass, IConfigDataValue<T> value)
     {
-        s_serializers.remove(tClass);
-        s_serializers.put(tClass, value);
+        m_serializers.remove(tClass);
+        m_serializers.put(tClass, value);
     }
 
     public void unregister(Class<?> tClass)
     {
-        s_serializers.remove(tClass);
+        m_serializers.remove(tClass);
     }
 
     public <T> IConfigDataValue<T> get(Class<T> tClass)
     {
-        if (!s_serializers.containsKey(tClass))
+        if (!m_serializers.containsKey(tClass))
         {
             Main.getMessenger().sendConsoleMessage("Warning, Missing config data value '" + tClass.getTypeName() + "'.");
             return null;
         }
-        return s_serializers.get(tClass);
+        return m_serializers.get(tClass);
     }
 }
