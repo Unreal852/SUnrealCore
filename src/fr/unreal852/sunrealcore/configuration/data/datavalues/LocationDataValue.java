@@ -4,9 +4,6 @@ import fr.unreal852.sunrealcore.configuration.CustomFileConfig;
 import fr.unreal852.sunrealcore.configuration.data.IConfigDataValue;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
-
-import java.util.UUID;
 
 public class LocationDataValue implements IConfigDataValue<Location>
 {
@@ -29,6 +26,5 @@ public class LocationDataValue implements IConfigDataValue<Location>
                 + ":" + location.getX() + ":" + location.getY() + ":" + location.getZ() + ":"
                 + location.getPitch() + ":" + location.getYaw();
         config.getYamlConfiguration().set(path, builder);
-
     }
 }

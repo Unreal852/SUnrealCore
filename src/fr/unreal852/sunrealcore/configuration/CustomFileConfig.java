@@ -25,6 +25,8 @@ public class CustomFileConfig
 
     private FileConfiguration m_fileConfig;
 
+    private ConfigDataManager m_configData;
+
     public CustomFileConfig(JavaPlugin plugin, String filePath, String resourcePath)
     {
         m_plugin = plugin;
@@ -71,6 +73,28 @@ public class CustomFileConfig
     public FileConfiguration getYamlConfiguration()
     {
         return m_fileConfig;
+    }
+
+    /**
+     * Returns the current Data Manager
+     *
+     * @return if the local one is null, it will return the public one
+     */
+    public ConfigDataManager getDataManager()
+    {
+        return m_configData;
+    }
+
+    /**
+     * Returns the data value
+     *
+     * @param tClass Class Type
+     * @param <T>    Type
+     * @return IConfigDataValue, null if no class has been registered for this type.
+     */
+    public <T> IConfigDataValue<T> getDataValue(Class<T> tClass)
+    {
+        return m_configData == null ? ConfigDataManager.getDataValue(tClass) : m_configData.get(tClass);
     }
 
     /**
@@ -203,23 +227,55 @@ public class CustomFileConfig
         return (float) val;
     }
 
+    /**
+     * Get long from file
+     *
+     * @param path path to long
+     * @return Long value from path, 0L if the path doesn't exists or is not valid
+     */
+    public long getLong(String path)
+    {
+        if (getYamlConfiguration().isLong(path))
+            return getYamlConfiguration().getLong(path);
+        return 0L;
+    }
+
+    /**
+     * Get value from file
+     *
+     * @param tClass Value Type Class
+     * @param path   Path to value
+     * @param <T>    Value Type
+     * @return Value, default if the path doesn't exists or is not valid
+     */
     public <T> T get(Class<T> tClass, String path)
     {
-        IConfigDataValue<T> dataValue = ConfigDataManager.get(tClass);
+        IConfigDataValue<T> dataValue = getDataManager().get(tClass);
         if (dataValue == null)
             return null;
         return dataValue.readValue(this, path);
     }
 
+    /**
+     * Write value to file
+     *
+     * @param tClass Value Type Class
+     * @param path   Path to value
+     * @param value  Value
+     * @param <T>    Value Type
+     */
     public <T> void set(Class<T> tClass, String path, T value)
     {
-        IConfigDataValue<T> dataValue = ConfigDataManager.get(tClass);
+        IConfigDataValue<T> dataValue = getDataManager().get(tClass);
         if (dataValue == null)
             return;
         dataValue.writeValue(this, path, value);
         save();
     }
 
+    /**
+     * Save file
+     */
     public void save()
     {
         try
