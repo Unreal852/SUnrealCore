@@ -17,14 +17,11 @@ import java.util.*;
 
 public class CustomFileConfig
 {
-    private JavaPlugin m_plugin;
-
-    private File m_file;
-
-    private String m_resourcePath;
-
+    private JavaPlugin        m_plugin;
+    private File              m_file;
+    private String            m_resourcePath;
+    private boolean           m_autoSave = true;
     private FileConfiguration m_fileConfig;
-
     private ConfigDataManager m_configData;
 
     public CustomFileConfig(JavaPlugin plugin, String filePath, String resourcePath)
@@ -63,6 +60,16 @@ public class CustomFileConfig
     public String getResourcePath()
     {
         return m_resourcePath;
+    }
+
+    /**
+     * Returns if the auto save is enabled
+     *
+     * @return true if the auto save is enabled, false otherwise
+     */
+    public boolean isAutoSaveEnabled()
+    {
+        return m_autoSave;
     }
 
     /**
@@ -148,6 +155,16 @@ public class CustomFileConfig
             return Sets.newHashSet();
         ConfigurationSection section = getYamlConfiguration().getConfigurationSection(path);
         return section == null ? Sets.newHashSet() : section.getKeys(false);
+    }
+
+    /**
+     * Enable / Disable auto save
+     *
+     * @param enabled true to enable, false otherwise
+     */
+    public void setAutoSave(boolean enabled)
+    {
+        m_autoSave = enabled;
     }
 
     /**
@@ -270,7 +287,8 @@ public class CustomFileConfig
         if (dataValue == null)
             return;
         dataValue.writeValue(this, path, value);
-        save();
+        if (m_autoSave)
+            save();
     }
 
     /**
