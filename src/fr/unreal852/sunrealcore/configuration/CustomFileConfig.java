@@ -3,6 +3,9 @@ package fr.unreal852.sunrealcore.configuration;
 import com.google.common.collect.Sets;
 import fr.unreal852.sunrealcore.configuration.data.ConfigDataManager;
 import fr.unreal852.sunrealcore.configuration.data.IConfigDataValue;
+import fr.unreal852.sunrealcore.configuration.data.object.ConfigObject;
+import fr.unreal852.sunrealcore.configuration.data.object.IConfigObject;
+import fr.unreal852.sunrealcore.reflection.ReflectionUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,6 +16,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class CustomFileConfig
@@ -240,8 +244,7 @@ public class CustomFileConfig
      */
     public float getFloat(String path)
     {
-        double val = getDouble(path);
-        return (float) val;
+        return (float) getDouble(path);
     }
 
     /**
@@ -269,7 +272,32 @@ public class CustomFileConfig
     {
         IConfigDataValue<T> dataValue = getDataValue(tClass);
         if (dataValue == null)
-            return null;
+        {
+            if (!IConfigObject.class.isAssignableFrom(tClass))
+                return null;
+            try
+            {
+                T instance = tClass.newInstance();
+                if (!path.endsWith("."))
+                    path += ".";
+                for (Field field : ReflectionUtils.getAnnotatedFields(ConfigObject.class, tClass, true))
+                {
+                    ConfigObject annotation = field.getAnnotation(ConfigObject.class);
+                    if (annotation.Path().isEmpty() || !exists(path + annotation.Path()))
+                        continue;
+                    Object object = get(field.getType(), path + annotation.Path());
+                    if (object == null)
+                        continue;
+                    field.set(instance, object);
+                }
+                return instance;
+            }
+            catch (InstantiationException | IllegalAccessException e)
+            {
+                e.printStackTrace();
+                return null;
+            }
+        }
         return dataValue.readValue(this, path);
     }
 

@@ -14,6 +14,6 @@ public class FloatDataValue implements IConfigDataValue<Float>
     @Override
     public void writeValue(CustomFileConfig config, String path, Float value)
     {
-        config.getYamlConfiguration().set(path, value);
+        config.getYamlConfiguration().set(path, (double)value);
     }
 }

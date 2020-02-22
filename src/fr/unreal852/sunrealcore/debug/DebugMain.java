@@ -12,8 +12,8 @@ import java.util.UUID;
 
 public final class DebugMain implements Listener
 {
-    private static final PluginMessenger  MESSENGER = new PluginMessenger(Main.getInstance(), ChatColor.RED + "[DEBUG] " + ChatColor.YELLOW);
-    public static final  CustomFileConfig CONFIG    = new CustomFileConfig(Main.getInstance(), "/debugconfig.yml", "fr/unreal852/sunrealcore/debug/debugconfig.yml");
+    public static final PluginMessenger  MESSENGER = new PluginMessenger(Main.getInstance(), ChatColor.RED + "[DEBUG] " + ChatColor.YELLOW);
+    public static final CustomFileConfig CONFIG    = new CustomFileConfig(Main.getInstance(), "/debugconfig.yml", "fr/unreal852/sunrealcore/debug/debugconfig.yml");
 
     public static void init()
     {
@@ -43,6 +43,9 @@ public final class DebugMain implements Listener
         MESSENGER.sendConsoleMessage("Long: " + CONFIG.get(Long.class, "test.long"));
         MESSENGER.sendConsoleMessage("Location: " + CONFIG.get(Location.class, "test.location"));
         MESSENGER.sendConsoleMessage("UUID: " + CONFIG.get(UUID.class, "test.uuid"));
+        MESSENGER.sendConsoleMessage("--------------------------------------------------------");
+        MyConfigObject myConfigObject = CONFIG.get(MyConfigObject.class, "test");
+        myConfigObject.printAll();
 
         CONFIG.setAutoSave(true);
     }
