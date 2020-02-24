@@ -3,7 +3,7 @@ package fr.unreal852.sunrealcore.configuration;
 import com.google.common.collect.Sets;
 import fr.unreal852.sunrealcore.configuration.data.ConfigDataManager;
 import fr.unreal852.sunrealcore.configuration.data.IConfigDataValue;
-import fr.unreal852.sunrealcore.configuration.data.object.ConfigObject;
+import fr.unreal852.sunrealcore.configuration.data.object.ConfigValue;
 import fr.unreal852.sunrealcore.configuration.data.object.IConfigObject;
 import fr.unreal852.sunrealcore.reflection.ReflectionUtils;
 import org.bukkit.configuration.ConfigurationSection;
@@ -280,15 +280,12 @@ public class CustomFileConfig
                 T instance = tClass.newInstance();
                 if (!path.endsWith("."))
                     path += ".";
-                for (Field field : ReflectionUtils.getAnnotatedFields(ConfigObject.class, tClass, true))
+                for (Field field : ReflectionUtils.getAnnotatedFields(ConfigValue.class, tClass, true))
                 {
-                    ConfigObject annotation = field.getAnnotation(ConfigObject.class);
+                    ConfigValue annotation = field.getAnnotation(ConfigValue.class);
                     if (annotation.Path().isEmpty() || !exists(path + annotation.Path()))
                         continue;
-                    Object object = get(field.getType(), path + annotation.Path());
-                    if (object == null)
-                        continue;
-                    field.set(instance, object);
+                    field.set(instance, get(field.getType(), path + annotation.Path()));
                 }
                 return instance;
             }
@@ -309,12 +306,32 @@ public class CustomFileConfig
      * @param value  Value
      * @param <T>    Value Type
      */
-    public <T> void set(Class<T> tClass, String path, T value)
+    public <T> void set(Class<T> tClass, String path, Object value)
     {
         IConfigDataValue<T> dataValue = getDataValue(tClass);
         if (dataValue == null)
-            return;
-        dataValue.writeValue(this, path, value);
+        {
+            if (!IConfigObject.class.isAssignableFrom(tClass))
+                return;
+            try
+            {
+                T instance = tClass.cast(value);
+                if (!path.endsWith("."))
+                    path += ".";
+                for (Field field : ReflectionUtils.getAnnotatedFields(ConfigValue.class, tClass, true))
+                {
+                    ConfigValue annotation = field.getAnnotation(ConfigValue.class);
+                    Object fieldValue = field.get(instance);
+                    set(field.getType(), path + annotation.Path(), fieldValue);
+                }
+            }
+            catch (IllegalAccessException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else
+            dataValue.writeValue(this, path, tClass.cast(value));
         if (m_autoSave)
             save();
     }

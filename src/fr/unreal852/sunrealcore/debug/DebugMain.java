@@ -47,6 +47,9 @@ public final class DebugMain implements Listener
         MyConfigObject myConfigObject = CONFIG.get(MyConfigObject.class, "test");
         myConfigObject.printAll();
 
+        CONFIG.set(MyConfigObject.class, "objectSet", myConfigObject);
+        CONFIG.save();
+
         CONFIG.setAutoSave(true);
     }
 }

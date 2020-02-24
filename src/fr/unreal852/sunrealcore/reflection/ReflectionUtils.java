@@ -1,7 +1,7 @@
 package fr.unreal852.sunrealcore.reflection;
 
 import com.google.common.collect.Sets;
-import fr.unreal852.sunrealcore.configuration.data.object.ConfigObject;
+import fr.unreal852.sunrealcore.configuration.data.object.ConfigValue;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -9,7 +9,7 @@ import java.util.Set;
 
 public final class ReflectionUtils
 {
-    public static Collection<Field> getAnnotatedFields(Class<? extends ConfigObject> annotation, Class<?> tClass, boolean setAccessible)
+    public static Collection<Field> getAnnotatedFields(Class<? extends ConfigValue> annotation, Class<?> tClass, boolean setAccessible)
     {
         Set<Field> fields = Sets.newHashSet();
         if (annotation == null || tClass == null)

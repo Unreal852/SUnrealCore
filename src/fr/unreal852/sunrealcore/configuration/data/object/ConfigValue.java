@@ -7,12 +7,19 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface ConfigObject
+public @interface ConfigValue
 {
     /**
-     * Config Path
+     * Config Path.
      *
      * @return Path to value
      */
     String Path();
+
+    /**
+     * Value index, use this to define in which order fields must be written to config.
+     *
+     * @return Value Index
+     */
+    int Index() default 0;
 }
