@@ -24,7 +24,9 @@ public final class DebugMain implements Listener
 
     private static void debugCustomConfig()
     {
+        /*
         CONFIG.getDataManager().register(MyConfigObject.class, new ConfigObjectDataValue<>());
+        CONFIG.getDataManager().register(MySubObject.class, new ConfigObjectDataValue<>()); */
         CONFIG.setAutoSave(false);
 
         CONFIG.set(String.class, "test.string", "My String");
@@ -34,6 +36,7 @@ public final class DebugMain implements Listener
         CONFIG.set(Float.class, "test.float", 0.3f);
         CONFIG.set(Long.class, "test.long", 14523L);
         CONFIG.set(Location.class, "test.location", new Location(Bukkit.getWorlds().get(0), -180.93018913098916, 69.0, 119.36027887536451, 12.149996f, 217.61688f));
+        CONFIG.set(MySubObject.class, "test.subObject", new MySubObject());
         CONFIG.set(UUID.class, "test.uuid", UUID.fromString("36b3014f-f8cf-42fc-9d0f-924eb5e9af22"));
         CONFIG.save();
 

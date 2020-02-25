@@ -2,6 +2,8 @@ package fr.unreal852.sunrealcore.configuration.data;
 
 import fr.unreal852.sunrealcore.Main;
 import fr.unreal852.sunrealcore.configuration.data.datavalues.*;
+import fr.unreal852.sunrealcore.configuration.data.object.IConfigObject;
+import fr.unreal852.sunrealcore.reflection.ReflectionUtils;
 import org.bukkit.Location;
 
 import java.util.*;
@@ -32,6 +34,7 @@ public class ConfigDataManager
         register(String.class, new StringDataValue());
         register(UUID.class, new UUIDDataValue());
         register(Location.class, new LocationDataValue());
+        register(IConfigObject.class, new ConfigObjectDataValue<>());
     }
 
     public <T> void register(Class<T> tClass, IConfigDataValue<T> value)
@@ -45,12 +48,18 @@ public class ConfigDataManager
         m_serializers.remove(tClass);
     }
 
+    @SuppressWarnings("unchecked")
     public <T> IConfigDataValue<T> get(Class<T> tClass)
     {
         if (!m_serializers.containsKey(tClass))
         {
-            Main.getMessenger().sendConsoleMessage("Warning, Missing config data value '" + tClass.getTypeName() + "'.");
-            return null;
+            if (IConfigObject.class.isAssignableFrom(tClass))
+                return m_serializers.get(IConfigObject.class);
+            else
+            {
+                Main.getMessenger().sendConsoleMessage("Warning, Missing config data value '" + tClass.getTypeName() + "'");
+                return null;
+            }
         }
         return m_serializers.get(tClass);
     }

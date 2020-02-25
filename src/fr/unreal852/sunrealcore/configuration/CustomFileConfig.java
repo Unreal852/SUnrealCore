@@ -288,30 +288,8 @@ public class CustomFileConfig
     {
         IConfigDataValue<T> dataValue = getDataValue(tClass);
         if (dataValue == null)
-        {
-            if (!IConfigObject.class.isAssignableFrom(tClass))
-                return;
-            try
-            {
-                T instance = tClass.cast(value);
-                if (!path.endsWith("."))
-                    path += ".";
-                setAutoSave(false);
-                for (Field field : ReflectionUtils.getAnnotatedFields(ConfigValue.class, tClass, true))
-                {
-                    ConfigValue annotation = field.getAnnotation(ConfigValue.class);
-                    Object fieldValue = field.get(instance);
-                    set(field.getType(), path + annotation.Path(), fieldValue);
-                }
-                setAutoSave(true);
-            }
-            catch (IllegalAccessException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        else
-            dataValue.writeValue(tClass, this, path, tClass.cast(value));
+            return;
+        dataValue.writeValue(tClass, this, path, tClass.cast(value));
         if (m_autoSave)
             save();
     }

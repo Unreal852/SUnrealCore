@@ -10,22 +10,24 @@ import java.util.UUID;
 
 public class MyConfigObject implements IConfigObject
 {
-    @ConfigValue(Path = "string")
-    private String   m_StringTest;
-    @ConfigValue(Path = "boolean")
-    private Boolean  m_booleanTest;
-    @ConfigValue(Path = "double")
-    private Double   m_doubleTest;
-    @ConfigValue(Path = "integer")
-    private Integer  m_intTest;
-    @ConfigValue(Path = "float")
-    private Float    m_floatTest;
-    @ConfigValue(Path = "long")
-    private Long     m_longTest;
-    @ConfigValue(Path = "location")
-    private Location m_locationTest;
-    @ConfigValue(Path = "uuid")
-    private UUID     m_uuidTest;
+    @ConfigValue(Index = 0, Path = "string")
+    private String      m_StringTest;
+    @ConfigValue(Index = 1, Path = "boolean")
+    private Boolean     m_booleanTest;
+    @ConfigValue(Index = 2, Path = "double")
+    private Double      m_doubleTest;
+    @ConfigValue(Index = 3, Path = "integer")
+    private Integer     m_intTest;
+    @ConfigValue(Index = 4, Path = "float")
+    private Float       m_floatTest;
+    @ConfigValue(Index = 5, Path = "long")
+    private Long        m_longTest;
+    @ConfigValue(Index = 6, Path = "location")
+    private Location    m_locationTest;
+    @ConfigValue(Index = 7, Path = "subObject")
+    private MySubObject m_subObject;
+    @ConfigValue(Index = 8, Path = "uuid")
+    private UUID        m_uuidTest;
 
     @Override
     public void onConfigLoaded()

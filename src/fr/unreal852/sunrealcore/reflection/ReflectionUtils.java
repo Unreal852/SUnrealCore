@@ -9,6 +9,19 @@ import java.util.Set;
 
 public final class ReflectionUtils
 {
+    public static <T> T newInstance(Class<T> tClass)
+    {
+        try
+        {
+            return tClass.newInstance();
+        }
+        catch (IllegalAccessException | InstantiationException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static Collection<Field> getAnnotatedFields(Class<? extends ConfigValue> annotation, Class<?> tClass, boolean setAccessible)
     {
         Set<Field> fields = Sets.newHashSet();

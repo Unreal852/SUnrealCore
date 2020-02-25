@@ -7,6 +7,8 @@ import fr.unreal852.sunrealcore.configuration.data.object.IConfigObject;
 import fr.unreal852.sunrealcore.reflection.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ConfigObjectDataValue<T extends IConfigObject> implements IConfigDataValue<T>
 {
@@ -44,7 +46,9 @@ public class ConfigObjectDataValue<T extends IConfigObject> implements IConfigDa
             if (!path.endsWith("."))
                 path += ".";
             config.setAutoSave(false);
-            for (Field field : ReflectionUtils.getAnnotatedFields(ConfigValue.class, tClass, true))
+            List<Field> fields = ReflectionUtils.getAnnotatedFields(ConfigValue.class, tClass, true)
+                    .stream().sorted(Comparator.comparingInt(f -> f.getAnnotation(ConfigValue.class).Index())).collect(Collectors.toList());
+            for (Field field : fields)
             {
                 ConfigValue annotation = field.getAnnotation(ConfigValue.class);
                 Object fieldValue = field.get(instance);
