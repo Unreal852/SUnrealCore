@@ -4,7 +4,7 @@ import fr.unreal852.sunrealcore.configuration.CustomFileConfig;
 
 public interface IConfigDataValue<T>
 {
-    T readValue(CustomFileConfig config, String path);
+    T readValue(Class<T> tClass, CustomFileConfig config, String path);
 
-    void writeValue(CustomFileConfig config, String path, T value);
+    void writeValue(Class<T> tClass, CustomFileConfig config, String path, T value);
 }

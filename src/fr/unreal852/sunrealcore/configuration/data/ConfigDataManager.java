@@ -4,13 +4,16 @@ import fr.unreal852.sunrealcore.Main;
 import fr.unreal852.sunrealcore.configuration.data.datavalues.*;
 import org.bukkit.Location;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class ConfigDataManager
 {
     private static final ConfigDataManager s_instance = new ConfigDataManager();
+
+    public static ConfigDataManager getPublicDataManager()
+    {
+        return s_instance;
+    }
 
     public static <T> IConfigDataValue<T> getDataValue(Class<T> tClass)
     {

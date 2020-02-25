@@ -2,6 +2,7 @@ package fr.unreal852.sunrealcore.debug;
 
 import fr.unreal852.sunrealcore.Main;
 import fr.unreal852.sunrealcore.configuration.CustomFileConfig;
+import fr.unreal852.sunrealcore.configuration.data.datavalues.ConfigObjectDataValue;
 import fr.unreal852.sunrealcore.messages.PluginMessenger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,6 +24,7 @@ public final class DebugMain implements Listener
 
     private static void debugCustomConfig()
     {
+        CONFIG.getDataManager().register(MyConfigObject.class, new ConfigObjectDataValue<>());
         CONFIG.setAutoSave(false);
 
         CONFIG.set(String.class, "test.string", "My String");
@@ -45,7 +47,6 @@ public final class DebugMain implements Listener
         MESSENGER.sendConsoleMessage("UUID: " + CONFIG.get(UUID.class, "test.uuid"));
         MESSENGER.sendConsoleMessage("--------------------------------------------------------");
         MyConfigObject myConfigObject = CONFIG.get(MyConfigObject.class, "test");
-        myConfigObject.printAll();
 
         CONFIG.set(MyConfigObject.class, "objectSet", myConfigObject);
         CONFIG.save();

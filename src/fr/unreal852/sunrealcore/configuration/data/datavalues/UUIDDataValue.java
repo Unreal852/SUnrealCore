@@ -8,7 +8,7 @@ import java.util.UUID;
 public class UUIDDataValue implements IConfigDataValue<UUID>
 {
     @Override
-    public UUID readValue(CustomFileConfig config, String path)
+    public UUID readValue(Class<UUID> tClass, CustomFileConfig config, String path)
     {
         String value = config.getString(path);
         if (value.isEmpty() || !value.contains("-"))
@@ -17,7 +17,7 @@ public class UUIDDataValue implements IConfigDataValue<UUID>
     }
 
     @Override
-    public void writeValue(CustomFileConfig config, String path, UUID value)
+    public void writeValue(Class<UUID> tClass, CustomFileConfig config, String path, UUID value)
     {
         config.getYamlConfiguration().set(path, value.toString());
     }

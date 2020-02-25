@@ -8,7 +8,7 @@ import org.bukkit.Location;
 public class LocationDataValue implements IConfigDataValue<Location>
 {
     @Override
-    public Location readValue(CustomFileConfig config, String path)
+    public Location readValue(Class<Location> tClass, CustomFileConfig config, String path)
     {
         String value = config.getString(path);
         if (value.isEmpty() || !value.contains("-"))
@@ -20,7 +20,7 @@ public class LocationDataValue implements IConfigDataValue<Location>
     }
 
     @Override
-    public void writeValue(CustomFileConfig config, String path, Location location)
+    public void writeValue(Class<Location> tClass, CustomFileConfig config, String path, Location location)
     {
         String builder = location.getWorld().getName()
                 + ":" + location.getX() + ":" + location.getY() + ":" + location.getZ() + ":"

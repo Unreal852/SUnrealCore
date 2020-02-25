@@ -27,7 +27,8 @@ public class MyConfigObject implements IConfigObject
     @ConfigValue(Path = "uuid")
     private UUID     m_uuidTest;
 
-    public void printAll()
+    @Override
+    public void onConfigLoaded()
     {
         MESSENGER.sendConsoleMessage("String: " + m_StringTest);
         MESSENGER.sendConsoleMessage("Boolean: " + m_booleanTest);
