@@ -1,7 +1,7 @@
-package fr.unreal852.sunrealcore.specialitems;
+package fr.unreal852.sunrealcore.specials.item;
 
 import fr.unreal852.sunrealcore.flags.Flag;
-import fr.unreal852.sunrealcore.specialitems.events.UnknownSpecialItemUseEvent;
+import fr.unreal852.sunrealcore.specials.events.UnknownSpecialItemUseEvent;
 import fr.unreal852.sunrealcore.utils.ItemStackUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -13,7 +13,7 @@ import java.util.*;
 
 public abstract class SpecialItem
 {
-    private static       Map<String, SpecialItem> ITEMS   = new HashMap<>();
+    private static final Map<String, SpecialItem> ITEMS   = new HashMap<>();
     private static final Random                   RANDOM  = new Random();
     private static final String                   FLAG_ID = "SpecialItemID";
 
@@ -24,10 +24,14 @@ public abstract class SpecialItem
         String id = Flag.getFlag(stack, FLAG_ID, PersistentDataType.STRING);
         if (id == null || id.isEmpty())
             return null;
-        if (!ITEMS.containsKey(id))
-            Bukkit.getPluginManager().callEvent(new UnknownSpecialItemUseEvent(id, stack));
         if (ITEMS.containsKey(id))
             return ITEMS.get(id);
+        else
+        {
+            Bukkit.getPluginManager().callEvent(new UnknownSpecialItemUseEvent(id, stack));
+            if (ITEMS.containsKey(id))
+                return ITEMS.get(id);
+        }
         return null;
     }
 
@@ -39,18 +43,19 @@ public abstract class SpecialItem
         return builder.toString();
     }
 
-    private String m_id;
-
+    private String    m_id;
     private ItemStack m_stack;
-
-    private boolean m_cancelNotImplementedEvents = false;
+    private boolean   m_cancelNotImplementedEvents = false;
 
     public SpecialItem(String name, ItemStack stack, String... lore)
     {
         m_id = generateID();
         m_stack = stack;
         Flag.setFlag(stack, FLAG_ID, m_id, PersistentDataType.STRING);
-        prepareStack(name, lore);
+        ItemMeta meta = ItemStackUtils.getMeta(m_stack);
+        meta.setDisplayName(name);
+        meta.setLore(Arrays.asList(lore));
+        m_stack.setItemMeta(meta);
         ITEMS.put(m_id, this);
     }
 
@@ -59,14 +64,6 @@ public abstract class SpecialItem
         m_id = Flag.getFlag(stack, FLAG_ID, PersistentDataType.STRING);
         m_stack = stack;
         ITEMS.put(m_id, this);
-    }
-
-    private void prepareStack(String name, String... lore)
-    {
-        ItemMeta meta = ItemStackUtils.getMeta(m_stack);
-        meta.setDisplayName(name);
-        meta.setLore(Arrays.asList(lore));
-        m_stack.setItemMeta(meta);
     }
 
     public String getID()

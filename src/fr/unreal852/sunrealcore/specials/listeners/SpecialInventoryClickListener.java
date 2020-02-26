@@ -1,7 +1,7 @@
-package fr.unreal852.sunrealcore.specialitems.listeners;
+package fr.unreal852.sunrealcore.specials.listeners;
 
-import fr.unreal852.sunrealcore.specialitems.SpecialItem;
-import fr.unreal852.sunrealcore.specialitems.events.inventory.*;
+import fr.unreal852.sunrealcore.specials.item.SpecialItem;
+import fr.unreal852.sunrealcore.specials.events.inventory.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -9,7 +9,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class SpecialItemInventoryClickListener implements Listener
+public class SpecialInventoryClickListener implements Listener
 {
     @EventHandler(priority = EventPriority.MONITOR)
     private void onInventoryClick(InventoryClickEvent event)
@@ -72,27 +72,27 @@ public class SpecialItemInventoryClickListener implements Listener
             }
             case NUMBER_KEY:
             {
-
+                event.setCancelled(specialItem.cancelNotImplementedEvents());
             }
             case DOUBLE_CLICK:
             {
-
+                event.setCancelled(specialItem.cancelNotImplementedEvents());
             }
             case DROP:
             {
-
+                event.setCancelled(specialItem.cancelNotImplementedEvents());
             }
             case CONTROL_DROP:
             {
-
+                event.setCancelled(specialItem.cancelNotImplementedEvents());
             }
             case CREATIVE:
             {
-
+                event.setCancelled(specialItem.cancelNotImplementedEvents());
             }
             case UNKNOWN:
             {
-
+                event.setCancelled(specialItem.cancelNotImplementedEvents());
             }
         }
     }

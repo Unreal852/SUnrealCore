@@ -2,10 +2,10 @@ package fr.unreal852.sunrealcore;
 
 import fr.unreal852.sunrealcore.debug.DebugMain;
 import fr.unreal852.sunrealcore.messages.PluginMessenger;
-import fr.unreal852.sunrealcore.specialitems.listeners.SpecialItemInteractListener;
-import fr.unreal852.sunrealcore.specialitems.listeners.SpecialItemInventoryClickListener;
-import fr.unreal852.sunrealcore.specialitems.listeners.SpecialItemPlayerItemDropListener;
-import fr.unreal852.sunrealcore.specialitems.listeners.SpecialItemPlayerItemHeldListener;
+import fr.unreal852.sunrealcore.specials.listeners.SpecialInteractListener;
+import fr.unreal852.sunrealcore.specials.listeners.SpecialInventoryClickListener;
+import fr.unreal852.sunrealcore.specials.listeners.SpecialPlayerItemDropListener;
+import fr.unreal852.sunrealcore.specials.listeners.SpecialPlayerItemHeldListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
@@ -15,7 +15,7 @@ public class Main extends JavaPlugin
 {
     private static       PluginMessenger s_messenger;
     private static       Main            s_instance;
-    private static final boolean         s_debug = true;
+    private static final boolean         s_debug = false;
 
     public static Main getInstance()
     {
@@ -52,10 +52,10 @@ public class Main extends JavaPlugin
     private void registerEvents()
     {
         PluginManager manager = Bukkit.getPluginManager();
-        manager.registerEvents(new SpecialItemInteractListener(), this);
-        manager.registerEvents(new SpecialItemPlayerItemDropListener(), this);
-        manager.registerEvents(new SpecialItemPlayerItemHeldListener(), this);
-        manager.registerEvents(new SpecialItemInventoryClickListener(), this);
+        manager.registerEvents(new SpecialInteractListener(), this);
+        manager.registerEvents(new SpecialPlayerItemDropListener(), this);
+        manager.registerEvents(new SpecialPlayerItemHeldListener(), this);
+        manager.registerEvents(new SpecialInventoryClickListener(), this);
     }
 
     private void loadDebug()

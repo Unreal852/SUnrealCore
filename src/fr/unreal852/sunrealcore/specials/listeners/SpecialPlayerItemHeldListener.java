@@ -1,14 +1,14 @@
-package fr.unreal852.sunrealcore.specialitems.listeners;
+package fr.unreal852.sunrealcore.specials.listeners;
 
-import fr.unreal852.sunrealcore.specialitems.SpecialItem;
-import fr.unreal852.sunrealcore.specialitems.events.IHeldChangeable;
+import fr.unreal852.sunrealcore.specials.item.SpecialItem;
+import fr.unreal852.sunrealcore.specials.events.IHeldChangeable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 
-public class SpecialItemPlayerItemHeldListener implements Listener
+public class SpecialPlayerItemHeldListener implements Listener
 {
     @EventHandler(priority = EventPriority.MONITOR)
     private void onPlayerItemHeld(PlayerItemHeldEvent event)

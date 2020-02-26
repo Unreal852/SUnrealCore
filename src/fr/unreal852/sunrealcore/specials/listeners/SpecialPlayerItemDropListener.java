@@ -1,14 +1,14 @@
-package fr.unreal852.sunrealcore.specialitems.listeners;
+package fr.unreal852.sunrealcore.specials.listeners;
 
-import fr.unreal852.sunrealcore.specialitems.SpecialItem;
-import fr.unreal852.sunrealcore.specialitems.events.IDroppable;
+import fr.unreal852.sunrealcore.specials.item.SpecialItem;
+import fr.unreal852.sunrealcore.specials.events.IDroppable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class SpecialItemPlayerItemDropListener implements Listener
+public class SpecialPlayerItemDropListener implements Listener
 {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerDropItem(PlayerDropItemEvent event)

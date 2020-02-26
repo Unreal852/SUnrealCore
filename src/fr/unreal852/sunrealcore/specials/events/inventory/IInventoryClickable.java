@@ -1,4 +1,4 @@
-package fr.unreal852.sunrealcore.specialitems.events.inventory;
+package fr.unreal852.sunrealcore.specials.events.inventory;
 
 public interface IInventoryClickable extends IInventoryLeftClickable, IInventoryRightClickable, IInventoryMiddleClickable, IInventoryShiftLeftClickable, IInventoryShiftRightClickable, IInventoryWindowBorderLeftClickable, IInventoryWindowBorderRightClickable
 {

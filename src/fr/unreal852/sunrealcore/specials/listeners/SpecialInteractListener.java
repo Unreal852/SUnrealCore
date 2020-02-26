@@ -1,15 +1,15 @@
-package fr.unreal852.sunrealcore.specialitems.listeners;
+package fr.unreal852.sunrealcore.specials.listeners;
 
-import fr.unreal852.sunrealcore.specialitems.SpecialItem;
-import fr.unreal852.sunrealcore.specialitems.events.ILeftHandClickable;
-import fr.unreal852.sunrealcore.specialitems.events.IRightHandClickable;
+import fr.unreal852.sunrealcore.specials.item.SpecialItem;
+import fr.unreal852.sunrealcore.specials.events.ILeftHandClickable;
+import fr.unreal852.sunrealcore.specials.events.IRightHandClickable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class SpecialItemInteractListener implements Listener
+public class SpecialInteractListener implements Listener
 {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteract(PlayerInteractEvent event)

@@ -1,4 +1,4 @@
-package fr.unreal852.sunrealcore.specialitems.events;
+package fr.unreal852.sunrealcore.specials.events;
 
 import fr.unreal852.sunrealcore.utils.ItemStackUtils;
 import org.bukkit.event.Event;
