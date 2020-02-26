@@ -19,6 +19,20 @@ public final class JavaUtils
         return ThreadLocalRandom.current().nextLong(min, max);
     }
 
+    public static String ensureEndWith(String value, String end)
+    {
+        if (!value.endsWith(end))
+            value += end;
+        return value;
+    }
+
+    public static <T> T ensureNotNull(T value, T defaultValue)
+    {
+        if(value == null)
+            return defaultValue;
+        return value;
+    }
+
     public static boolean randBoolean()
     {
         return ThreadLocalRandom.current().nextBoolean();

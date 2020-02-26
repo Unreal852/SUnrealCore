@@ -1,20 +1,20 @@
 package fr.unreal852.sunrealcore.debug;
 
 import fr.unreal852.sunrealcore.Main;
-import fr.unreal852.sunrealcore.configuration.CustomFileConfig;
-import fr.unreal852.sunrealcore.configuration.data.datavalues.ConfigObjectDataValue;
+import fr.unreal852.sunrealcore.configuration.ConfigFile;
 import fr.unreal852.sunrealcore.messages.PluginMessenger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.event.Listener;
 
+import java.util.List;
 import java.util.UUID;
 
 public final class DebugMain implements Listener
 {
-    public static final PluginMessenger  MESSENGER = new PluginMessenger(Main.getInstance(), ChatColor.RED + "[DEBUG] " + ChatColor.YELLOW);
-    public static final CustomFileConfig CONFIG    = new CustomFileConfig(Main.getInstance(), "/debugconfig.yml", "fr/unreal852/sunrealcore/debug/debugconfig.yml");
+    public static final PluginMessenger MESSENGER = new PluginMessenger(Main.getInstance(), ChatColor.RED + "[DEBUG] " + ChatColor.YELLOW);
+    public static final ConfigFile      CONFIG    = new ConfigFile(Main.getInstance(), "/debugconfig.yml", "fr/unreal852/sunrealcore/debug/debugconfig.yml");
 
     public static void init()
     {
@@ -24,9 +24,6 @@ public final class DebugMain implements Listener
 
     private static void debugCustomConfig()
     {
-        /*
-        CONFIG.getDataManager().register(MyConfigObject.class, new ConfigObjectDataValue<>());
-        CONFIG.getDataManager().register(MySubObject.class, new ConfigObjectDataValue<>()); */
         CONFIG.setAutoSave(false);
 
         CONFIG.set(String.class, "test.string", "My String");
@@ -49,6 +46,7 @@ public final class DebugMain implements Listener
         MESSENGER.sendConsoleMessage("Location: " + CONFIG.get(Location.class, "test.location"));
         MESSENGER.sendConsoleMessage("UUID: " + CONFIG.get(UUID.class, "test.uuid"));
         MESSENGER.sendConsoleMessage("--------------------------------------------------------");
+        MESSENGER.sendConsoleMessage(CONFIG.getList(MyConfigObject.class, "objectList").size() + "");
         MyConfigObject myConfigObject = CONFIG.get(MyConfigObject.class, "test");
 
         CONFIG.set(MyConfigObject.class, "objectSet", myConfigObject);

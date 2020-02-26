@@ -5,6 +5,9 @@ import fr.unreal852.sunrealcore.configuration.data.datavalues.*;
 import fr.unreal852.sunrealcore.configuration.data.object.IConfigObject;
 import fr.unreal852.sunrealcore.reflection.ReflectionUtils;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
 
@@ -34,7 +37,11 @@ public class ConfigDataManager
         register(String.class, new StringDataValue());
         register(UUID.class, new UUIDDataValue());
         register(Location.class, new LocationDataValue());
+        register(Material.class, new MaterialDataValue());
+        register(PotionEffectType.class, new PotionEffectTypeDataValue());
+        register(Enchantment.class, new EnchantmentDataValue());
         register(IConfigObject.class, new ConfigObjectDataValue<>());
+        register(Enum.class, new EnumDataValue<>());
     }
 
     public <T> void register(Class<T> tClass, IConfigDataValue<T> value)
@@ -55,11 +62,15 @@ public class ConfigDataManager
         {
             if (IConfigObject.class.isAssignableFrom(tClass))
                 return m_serializers.get(IConfigObject.class);
-            else
+            else if (Enum.class.isAssignableFrom(tClass))
+                return m_serializers.get(Enum.class);
+            else if (IConfigDataValue.class.isAssignableFrom(tClass))
             {
-                Main.getMessenger().sendConsoleMessage("Warning, Missing config data value '" + tClass.getTypeName() + "'");
-                return null;
+                Main.getMessenger().sendConsoleMessage("Warning, Missing config data value '" + tClass.getTypeName() + "'. Trying to register it.");
+                register(tClass, (IConfigDataValue) ReflectionUtils.newInstance(tClass));
             }
+            else
+                return null;
         }
         return m_serializers.get(tClass);
     }

@@ -2,11 +2,6 @@ package fr.unreal852.sunrealcore.debug;
 
 import fr.unreal852.sunrealcore.configuration.data.object.ConfigValue;
 import fr.unreal852.sunrealcore.configuration.data.object.IConfigObject;
-import org.bukkit.Location;
-
-import java.util.UUID;
-
-import static fr.unreal852.sunrealcore.debug.DebugMain.MESSENGER;
 
 public class MySubObject implements IConfigObject
 {
@@ -25,7 +20,7 @@ public class MySubObject implements IConfigObject
     private Double  m_doubleTest;
 
     @Override
-    public void onConfigLoaded()
+    public void onConfigLoaded(String name)
     {
 
     }

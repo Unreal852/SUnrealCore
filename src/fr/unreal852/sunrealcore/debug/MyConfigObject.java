@@ -30,7 +30,7 @@ public class MyConfigObject implements IConfigObject
     private UUID        m_uuidTest;
 
     @Override
-    public void onConfigLoaded()
+    public void onConfigLoaded(String name)
     {
         MESSENGER.sendConsoleMessage("String: " + m_StringTest);
         MESSENGER.sendConsoleMessage("Boolean: " + m_booleanTest);

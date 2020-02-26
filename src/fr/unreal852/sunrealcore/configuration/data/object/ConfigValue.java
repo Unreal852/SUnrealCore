@@ -22,4 +22,11 @@ public @interface ConfigValue
      * @return Value Index
      */
     int Index() default 0;
+
+    /**
+     * Use this to specify field type
+     *
+     * @return Field Type
+     */
+    Class<?> Type() default void.class;
 }

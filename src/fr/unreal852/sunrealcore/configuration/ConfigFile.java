@@ -1,11 +1,10 @@
 package fr.unreal852.sunrealcore.configuration;
 
 import com.google.common.collect.Sets;
+import fr.unreal852.sunrealcore.Main;
 import fr.unreal852.sunrealcore.configuration.data.ConfigDataManager;
 import fr.unreal852.sunrealcore.configuration.data.IConfigDataValue;
-import fr.unreal852.sunrealcore.configuration.data.object.ConfigValue;
-import fr.unreal852.sunrealcore.configuration.data.object.IConfigObject;
-import fr.unreal852.sunrealcore.reflection.ReflectionUtils;
+import fr.unreal852.sunrealcore.utils.JavaUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,10 +15,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
 import java.util.*;
 
-public class CustomFileConfig
+public class ConfigFile
 {
     private JavaPlugin        m_plugin;
     private File              m_file;
@@ -28,16 +26,17 @@ public class CustomFileConfig
     private FileConfiguration m_fileConfig;
     private ConfigDataManager m_configData;
 
-    public CustomFileConfig(JavaPlugin plugin, String filePath, String resourcePath)
+    public ConfigFile(JavaPlugin plugin, String filePath, String resourcePath)
     {
         m_plugin = plugin;
         m_file = new File(plugin.getDataFolder().getAbsolutePath().concat(filePath));
+        //m_resourcePath = resourcePath.replace(".", "/");
         m_resourcePath = resourcePath;
         load();
     }
 
     /**
-     * Returns the associated plugin of this file.
+     * Returns the associated {@link JavaPlugin} of this file.
      *
      * @return Plugin
      */
@@ -47,7 +46,7 @@ public class CustomFileConfig
     }
 
     /**
-     * Returns the file.
+     * Returns the config {@link File}.
      *
      * @return File
      */
@@ -159,6 +158,16 @@ public class CustomFileConfig
             return Sets.newHashSet();
         ConfigurationSection section = getYamlConfiguration().getConfigurationSection(path);
         return section == null ? Sets.newHashSet() : section.getKeys(false);
+    }
+
+    /**
+     * Set the {@link ConfigDataManager} used for this {@link ConfigFile}
+     *
+     * @param dataManager the data manager to use
+     */
+    public void setDataManager(ConfigDataManager dataManager)
+    {
+        m_configData = dataManager;
     }
 
     /**
@@ -277,6 +286,44 @@ public class CustomFileConfig
     }
 
     /**
+     * Get value list from file
+     *
+     * @param tClass Value Type Class
+     * @param path   Path to values
+     * @param <T>    Value Type
+     * @return Value List, empty list if the path doesn't exists or is not valid
+     */
+    public <T> List<T> getList(Class<T> tClass, String path)
+    {
+        IConfigDataValue<T> dataValue = getDataValue(tClass);
+        List<T> list = new ArrayList<>();
+        if (dataValue == null)
+            return list;
+        for (String key : getSection(path))
+            list.add(get(tClass, JavaUtils.ensureEndWith(path, ".") + key));
+        return list;
+    }
+
+    /**
+     * Get values map from file ( Key will be the YAML Key )
+     *
+     * @param tClass Value Type Class
+     * @param path   Path to values
+     * @param <T>    Value Type
+     * @return Value Map, empty map if the path doesn't exists or is not valid
+     */
+    public <T> Map<String, T> getMap(Class<T> tClass, String path)
+    {
+        IConfigDataValue<T> dataValue = getDataValue(tClass);
+        Map<String, T> map = new HashMap<>();
+        if (dataValue == null)
+            return map;
+        for (String key : getSection(path))
+            map.put(key, get(tClass, JavaUtils.ensureEndWith(path, ".") + key));
+        return map;
+    }
+
+    /**
      * Write value to file
      *
      * @param tClass Value Type Class
@@ -299,9 +346,24 @@ public class CustomFileConfig
      */
     public void save()
     {
+        save(null);
+    }
+
+    /**
+     * Save file
+     *
+     * @param path File path
+     */
+    public void save(String path)
+    {
+        if (!isLoaded())
+            return;
         try
         {
-            getYamlConfiguration().save(getFile());
+            if (path == null)
+                getYamlConfiguration().save(getFile());
+            else
+                getYamlConfiguration().save(getFile().getAbsolutePath().concat(path));
         }
         catch (Exception ex)
         {
