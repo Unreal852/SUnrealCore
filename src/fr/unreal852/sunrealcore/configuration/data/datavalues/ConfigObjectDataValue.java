@@ -22,7 +22,9 @@ public class ConfigObjectDataValue<T extends IConfigObject> implements IConfigDa
             T instance = tClass.newInstance();
             String objName = path.substring(path.lastIndexOf(".") + 1);
             path = JavaUtils.ensureEndWith(path, ".");
-            for (Field field : ReflectionUtils.getAnnotatedFields(ConfigValue.class, tClass, true))
+            List<Field> fields = ReflectionUtils.getAnnotatedFields(ConfigValue.class, tClass, true)
+                    .stream().sorted(Comparator.comparingInt(f -> f.getAnnotation(ConfigValue.class).Index())).collect(Collectors.toList());
+            for (Field field : fields)
             {
                 ConfigValue annotation = field.getAnnotation(ConfigValue.class);
                 if (annotation.Path().isEmpty() || !config.exists(path + annotation.Path()))
@@ -30,7 +32,7 @@ public class ConfigObjectDataValue<T extends IConfigObject> implements IConfigDa
                 Class<?> fieldType = field.getType();
                 if (List.class.isAssignableFrom(fieldType) && annotation.Type() != void.class) //Todo: Create datavalue for List, Map etc?
                     field.set(instance, config.getList(annotation.Type(), path + annotation.Path()));
-                else if (Map.class.isAssignableFrom(fieldType)&& annotation.Type() != void.class)
+                else if (Map.class.isAssignableFrom(fieldType) && annotation.Type() != void.class)
                     field.set(instance, config.getMap(annotation.Type(), path + annotation.Path()));
                 else
                     field.set(instance, config.get(field.getType(), path + annotation.Path()));
