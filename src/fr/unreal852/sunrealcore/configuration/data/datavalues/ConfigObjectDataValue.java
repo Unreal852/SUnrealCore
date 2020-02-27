@@ -21,7 +21,8 @@ public class ConfigObjectDataValue<T extends IConfigObject> implements IConfigDa
         {
             T instance = tClass.newInstance();
             String objName = path.substring(path.lastIndexOf(".") + 1);
-            path = JavaUtils.ensureEndWith(path, ".");
+            if (!path.isEmpty())
+                path = JavaUtils.ensureEndWith(path, ".");
             List<Field> fields = ReflectionUtils.getAnnotatedFields(ConfigValue.class, tClass, true)
                     .stream().sorted(Comparator.comparingInt(f -> f.getAnnotation(ConfigValue.class).Index())).collect(Collectors.toList());
             for (Field field : fields)
