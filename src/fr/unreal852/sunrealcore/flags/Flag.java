@@ -139,7 +139,7 @@ public final class Flag
         stack.setItemMeta(meta);
     }
 
-    /*
+    /**
      * Set Temporary flag
      *
      * @param stack Item Stack

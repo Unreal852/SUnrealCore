@@ -67,7 +67,7 @@ public class ConfigDataManager
             else if (IConfigDataValue.class.isAssignableFrom(tClass))
             {
                 Main.getMessenger().sendConsoleMessage("Warning, Missing config data value '" + tClass.getTypeName() + "'. Trying to register it.");
-                register(tClass, (IConfigDataValue) ReflectionUtils.newInstance(tClass));
+                register(tClass, (IConfigDataValue<T>) ReflectionUtils.newInstance(tClass));
             }
             else
                 return null;
