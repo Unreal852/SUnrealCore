@@ -2,11 +2,11 @@ package fr.unreal852.sunrealcore.raytrace.tracers;
 
 import fr.unreal852.sunrealcore.raytrace.BaseRayTracer;
 import fr.unreal852.sunrealcore.utils.EntityUtils;
-import net.minecraft.server.v1_15_R1.*;
+import net.minecraft.server.v1_16_R1.*;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_15_R1.*;
-import org.bukkit.craftbukkit.v1_15_R1.block.CraftBlock;
+import org.bukkit.craftbukkit.v1_16_R1.*;
+import org.bukkit.craftbukkit.v1_16_R1.block.CraftBlock;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
@@ -34,7 +34,7 @@ public class EntityRayTracer extends BaseRayTracer<Entity>
             Vec3D vector = new Vec3D(locationProgress.getX(), locationProgress.getY(), locationProgress.getZ());
             for (AxisAlignedBB axis : nmsVoxelShape.d())
             {
-                if (axis.a(blockPos).c(vector))
+                if (axis.a(blockPos).d(vector))
                     return false;
             }
         }

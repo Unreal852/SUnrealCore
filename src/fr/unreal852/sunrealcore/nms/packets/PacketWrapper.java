@@ -1,7 +1,7 @@
 package fr.unreal852.sunrealcore.nms.packets;
 
 import fr.unreal852.sunrealcore.nms.NMSWrapper;
-import net.minecraft.server.v1_15_R1.*;
+import net.minecraft.server.v1_16_R1.*;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;

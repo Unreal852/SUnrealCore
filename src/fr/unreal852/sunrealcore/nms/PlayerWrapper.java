@@ -1,6 +1,6 @@
 package fr.unreal852.sunrealcore.nms;
 
-import net.minecraft.server.v1_15_R1.EntityPlayer;
+import net.minecraft.server.v1_16_R1.EntityPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
